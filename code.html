@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,9 +19,9 @@ color:white;
 
 header{
 background:black;
-padding:20px;
+padding:15px;
+font-size:24px;
 text-align:center;
-font-size:26px;
 }
 
 .container{
@@ -39,12 +38,12 @@ padding:20px;
 .sidebar button{
 width:100%;
 padding:12px;
-margin:8px 0;
+margin:6px 0;
 border:none;
 background:#333;
 color:white;
+border-radius:6px;
 cursor:pointer;
-border-radius:5px;
 }
 
 .sidebar button:hover{
@@ -57,7 +56,7 @@ padding:25px;
 }
 
 .card{
-background:#1b1b1b;
+background:#1a1a1a;
 padding:20px;
 border-radius:10px;
 margin-bottom:20px;
@@ -65,7 +64,7 @@ margin-bottom:20px;
 
 input,select{
 padding:10px;
-margin:6px;
+margin:5px;
 border:none;
 border-radius:5px;
 }
@@ -74,8 +73,8 @@ button.action{
 background:#00c3ff;
 border:none;
 padding:10px 15px;
-cursor:pointer;
 color:white;
+cursor:pointer;
 border-radius:5px;
 }
 
@@ -100,11 +99,10 @@ flex-direction:column;
 
 .chart{
 height:200px;
-background:#111;
 display:flex;
 align-items:flex-end;
 gap:10px;
-padding:10px;
+margin-top:10px;
 }
 
 .bar{
@@ -123,11 +121,11 @@ margin-top:10px;
 
 <body>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 
 <div id="loginPage" class="login">
 
-<h1>🚦 Traffic Enforcement Login</h1>
+<h2>🚦 Traffic System Login</h2>
 
 <input id="loginUser" placeholder="Username">
 <input id="loginPass" type="password" placeholder="Password">
@@ -143,16 +141,15 @@ margin-top:10px;
 
 <p id="loginMsg"></p>
 
-<p class="link" onclick="showSignup()">Create new account</p>
+<p class="link" onclick="showSignup()">Create Account</p>
 
 </div>
 
-
-<!-- SIGNUP PAGE -->
+<!-- SIGNUP -->
 
 <div id="signupPage" class="login" style="display:none">
 
-<h1>🚦 Signup</h1>
+<h2>Signup</h2>
 
 <input id="signupUser" placeholder="Username">
 <input id="signupPass" type="password" placeholder="Password">
@@ -165,14 +162,13 @@ margin-top:10px;
 
 </div>
 
-
-<!-- MAIN SYSTEM -->
+<!-- SYSTEM -->
 
 <div id="system" style="display:none">
 
 <header>
 AI Digital Traffic Enforcement System
-<button style="float:right" onclick="logout()">Logout</button>
+<button onclick="logout()" style="float:right">Logout</button>
 </header>
 
 <div class="container">
@@ -183,24 +179,28 @@ AI Digital Traffic Enforcement System
 <button onclick="show('add')">Add Violation</button>
 <button onclick="show('records')">Records</button>
 <button onclick="show('analytics')">Analytics</button>
-<button onclick="aiDetect()">AI Plate Detection</button>
+<button onclick="cameraDetect()">📷 Camera Detect</button>
 
 </div>
 
 <div class="content">
 
+<!-- DASHBOARD -->
+
 <div id="dashboard" class="card">
 
-<h2>Dashboard</h2>
+<h3>Dashboard</h3>
 
 <p>Total Violations: <span id="total">0</span></p>
 <p>Repeat Offenders: <span id="repeat">0</span></p>
 
 </div>
 
+<!-- ADD VIOLATION -->
+
 <div id="add" class="card" style="display:none">
 
-<h2>Add Violation</h2>
+<h3>Add Violation</h3>
 
 <input id="vehicle" placeholder="Vehicle Number">
 
@@ -217,19 +217,24 @@ AI Digital Traffic Enforcement System
 
 </div>
 
+<!-- RECORDS -->
+
 <div id="records" class="card" style="display:none">
 
-<h2>Violation Records</h2>
+<h3>Violation Records</h3>
 
 <table>
 
 <thead>
+
 <tr>
 <th>Vehicle</th>
 <th>Violation</th>
 <th>Fine</th>
 <th>Score</th>
+<th>Payment</th>
 </tr>
+
 </thead>
 
 <tbody id="table"></tbody>
@@ -238,9 +243,11 @@ AI Digital Traffic Enforcement System
 
 </div>
 
+<!-- ANALYTICS -->
+
 <div id="analytics" class="card" style="display:none">
 
-<h2>Analytics</h2>
+<h3>Fine Analytics</h3>
 
 <div class="chart" id="chart"></div>
 
@@ -251,40 +258,25 @@ AI Digital Traffic Enforcement System
 
 </div>
 
-
 <script>
 
 let violations=[]
 let currentOTP=""
-let currentUser=""
 
-/* PAGE SWITCH */
+/* vehicle database */
 
-function showSignup(){
+let vehicleDB=[
+{number:"AP09AB1234",owner:"Rahul",license:"DL12345"},
+{number:"TS07XY4567",owner:"Arjun",license:"DL99882"},
+{number:"KA01CD7890",owner:"Suresh",license:"DL77766"}
+]
 
-document.getElementById("loginPage").style.display="none"
-document.getElementById("signupPage").style.display="flex"
-
-}
-
-function showLogin(){
-
-document.getElementById("signupPage").style.display="none"
-document.getElementById("loginPage").style.display="flex"
-
-}
-
-/* SIGNUP */
+/* signup */
 
 function signup(){
 
 let user=document.getElementById("signupUser").value
 let pass=document.getElementById("signupPass").value
-
-if(user=="" || pass==""){
-document.getElementById("signupMsg").innerText="Fill all fields"
-return
-}
 
 let users=JSON.parse(localStorage.getItem("users")||"[]")
 
@@ -292,11 +284,11 @@ users.push({user,pass})
 
 localStorage.setItem("users",JSON.stringify(users))
 
-document.getElementById("signupMsg").innerText="Account created!"
+document.getElementById("signupMsg").innerText="Account Created"
 
 }
 
-/* LOGIN */
+/* login */
 
 function login(){
 
@@ -309,8 +301,6 @@ let found=users.find(u=>u.user==user && u.pass==pass)
 
 if(found){
 
-currentUser=user
-
 currentOTP=Math.floor(1000+Math.random()*9000)
 
 alert("OTP Sent: "+currentOTP)
@@ -319,13 +309,11 @@ document.getElementById("otpBox").style.display="block"
 
 }else{
 
-document.getElementById("loginMsg").innerText="Invalid credentials"
+document.getElementById("loginMsg").innerText="Invalid Login"
 
 }
 
 }
-
-/* OTP */
 
 function verifyOTP(){
 
@@ -344,27 +332,39 @@ alert("Wrong OTP")
 
 }
 
-/* LOGOUT */
-
 function logout(){
 
 location.reload()
 
 }
 
-/* NAVIGATION */
+function showSignup(){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("signupPage").style.display="flex"
+
+}
+
+function showLogin(){
+
+document.getElementById("signupPage").style.display="none"
+document.getElementById("loginPage").style.display="flex"
+
+}
+
+/* navigation */
 
 function show(id){
 
-["dashboard","add","records","analytics"].forEach(s=>{
-document.getElementById(s).style.display="none"
+["dashboard","add","records","analytics"].forEach(x=>{
+document.getElementById(x).style.display="none"
 })
 
 document.getElementById(id).style.display="block"
 
 }
 
-/* VIOLATIONS */
+/* add violation */
 
 function addViolation(){
 
@@ -376,11 +376,68 @@ let score=100-fine/10
 
 violations.push({vehicle,type,fine,score})
 
+verifyLicense(vehicle)
+getLocation()
+sendEmail(vehicle,fine)
+sendSMS(vehicle,fine)
+
 updateTable()
 updateDashboard()
 updateChart()
 
 }
+
+/* license verify */
+
+function verifyLicense(vehicle){
+
+let found=vehicleDB.find(v=>v.number==vehicle)
+
+if(found){
+
+alert("License Verified\nOwner: "+found.owner)
+
+}else{
+
+alert("Vehicle not found in DB")
+
+}
+
+}
+
+/* location */
+
+function getLocation(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+console.log("Location:",pos.coords.latitude,pos.coords.longitude)
+
+})
+
+}
+
+}
+
+/* email simulation */
+
+function sendEmail(vehicle,fine){
+
+console.log("Email sent for",vehicle,"fine",fine)
+
+}
+
+/* sms simulation */
+
+function sendSMS(vehicle,fine){
+
+console.log("SMS alert sent")
+
+}
+
+/* update table */
 
 function updateTable(){
 
@@ -389,12 +446,17 @@ let html=""
 violations.forEach(v=>{
 
 html+=`
+
 <tr>
+
 <td>${v.vehicle}</td>
 <td>${v.type}</td>
 <td>${v.fine}</td>
 <td>${v.score}</td>
+<td><button onclick="payFine('${v.vehicle}',${v.fine})">Pay</button></td>
+
 </tr>
+
 `
 
 })
@@ -403,26 +465,34 @@ document.getElementById("table").innerHTML=html
 
 }
 
+/* dashboard */
+
 function updateDashboard(){
 
 document.getElementById("total").innerText=violations.length
 
 let vehicles=violations.map(v=>v.vehicle)
+
 let unique=new Set(vehicles)
 
 document.getElementById("repeat").innerText=violations.length-unique.size
 
 }
 
+/* chart */
+
 function updateChart(){
 
 let chart=document.getElementById("chart")
+
 chart.innerHTML=""
 
 violations.forEach(v=>{
 
 let bar=document.createElement("div")
+
 bar.className="bar"
+
 bar.style.height=v.fine/2+"px"
 
 chart.appendChild(bar)
@@ -431,15 +501,49 @@ chart.appendChild(bar)
 
 }
 
-/* AI DETECTION */
+/* payment */
 
-function aiDetect(){
+function payFine(vehicle,fine){
+
+let ok=confirm("Pay ₹"+fine+" ?")
+
+if(ok){
+
+alert("UPI Payment Successful")
+
+downloadChallan(vehicle,fine)
+
+}
+
+}
+
+/* challan download */
+
+function downloadChallan(vehicle,fine){
+
+let text="Traffic Challan\nVehicle:"+vehicle+"\nFine:"+fine
+
+let blob=new Blob([text])
+
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+
+a.download="challan_"+vehicle+".txt"
+
+a.click()
+
+}
+
+/* camera detection */
+
+function cameraDetect(){
 
 let vehicles=["AP09AB1234","TS07XY4567","KA01CD7890"]
 
-let random=vehicles[Math.floor(Math.random()*vehicles.length)]
+let detected=vehicles[Math.floor(Math.random()*vehicles.length)]
 
-alert("AI Detected Vehicle: "+random)
+alert("Camera detected vehicle: "+detected)
 
 }
 
@@ -447,5 +551,3 @@ alert("AI Detected Vehicle: "+random)
 
 </body>
 </html>
-```
-

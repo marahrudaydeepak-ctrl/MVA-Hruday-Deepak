@@ -1,0 +1,450 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Digital Traffic Enforcement System</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+}
+
+header{
+background:black;
+padding:20px;
+text-align:center;
+font-size:26px;
+}
+
+.container{
+display:flex;
+}
+
+.sidebar{
+width:230px;
+background:#111;
+height:100vh;
+padding:20px;
+}
+
+.sidebar button{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+background:#333;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+.sidebar button:hover{
+background:#00c3ff;
+}
+
+.content{
+flex:1;
+padding:25px;
+}
+
+.card{
+background:#1b1b1b;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+input,select{
+padding:10px;
+margin:6px;
+border:none;
+border-radius:5px;
+}
+
+button.action{
+background:#00c3ff;
+border:none;
+padding:10px 15px;
+cursor:pointer;
+color:white;
+border-radius:5px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid gray;
+}
+
+.login{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+}
+
+.chart{
+height:200px;
+background:#111;
+display:flex;
+align-items:flex-end;
+gap:10px;
+padding:10px;
+}
+
+.bar{
+width:30px;
+background:#00c3ff;
+}
+
+.link{
+color:#00c3ff;
+cursor:pointer;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+
+<div id="loginPage" class="login">
+
+<h1>🚦 Traffic Enforcement Login</h1>
+
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
+
+<button class="action" onclick="login()">Login</button>
+
+<div id="otpBox" style="display:none">
+
+<input id="otp" placeholder="Enter OTP">
+<button class="action" onclick="verifyOTP()">Verify OTP</button>
+
+</div>
+
+<p id="loginMsg"></p>
+
+<p class="link" onclick="showSignup()">Create new account</p>
+
+</div>
+
+
+<!-- SIGNUP PAGE -->
+
+<div id="signupPage" class="login" style="display:none">
+
+<h1>🚦 Signup</h1>
+
+<input id="signupUser" placeholder="Username">
+<input id="signupPass" type="password" placeholder="Password">
+
+<button class="action" onclick="signup()">Signup</button>
+
+<p id="signupMsg"></p>
+
+<p class="link" onclick="showLogin()">Back to Login</p>
+
+</div>
+
+
+<!-- MAIN SYSTEM -->
+
+<div id="system" style="display:none">
+
+<header>
+AI Digital Traffic Enforcement System
+<button style="float:right" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+<div class="sidebar">
+
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('add')">Add Violation</button>
+<button onclick="show('records')">Records</button>
+<button onclick="show('analytics')">Analytics</button>
+<button onclick="aiDetect()">AI Plate Detection</button>
+
+</div>
+
+<div class="content">
+
+<div id="dashboard" class="card">
+
+<h2>Dashboard</h2>
+
+<p>Total Violations: <span id="total">0</span></p>
+<p>Repeat Offenders: <span id="repeat">0</span></p>
+
+</div>
+
+<div id="add" class="card" style="display:none">
+
+<h2>Add Violation</h2>
+
+<input id="vehicle" placeholder="Vehicle Number">
+
+<select id="type">
+<option>Helmet Violation</option>
+<option>Signal Jump</option>
+<option>Over Speed</option>
+<option>Seatbelt Violation</option>
+</select>
+
+<input id="fine" placeholder="Fine Amount">
+
+<button class="action" onclick="addViolation()">Submit</button>
+
+</div>
+
+<div id="records" class="card" style="display:none">
+
+<h2>Violation Records</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Vehicle</th>
+<th>Violation</th>
+<th>Fine</th>
+<th>Score</th>
+</tr>
+</thead>
+
+<tbody id="table"></tbody>
+
+</table>
+
+</div>
+
+<div id="analytics" class="card" style="display:none">
+
+<h2>Analytics</h2>
+
+<div class="chart" id="chart"></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<script>
+
+let violations=[]
+let currentOTP=""
+let currentUser=""
+
+/* PAGE SWITCH */
+
+function showSignup(){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("signupPage").style.display="flex"
+
+}
+
+function showLogin(){
+
+document.getElementById("signupPage").style.display="none"
+document.getElementById("loginPage").style.display="flex"
+
+}
+
+/* SIGNUP */
+
+function signup(){
+
+let user=document.getElementById("signupUser").value
+let pass=document.getElementById("signupPass").value
+
+if(user=="" || pass==""){
+document.getElementById("signupMsg").innerText="Fill all fields"
+return
+}
+
+let users=JSON.parse(localStorage.getItem("users")||"[]")
+
+users.push({user,pass})
+
+localStorage.setItem("users",JSON.stringify(users))
+
+document.getElementById("signupMsg").innerText="Account created!"
+
+}
+
+/* LOGIN */
+
+function login(){
+
+let user=document.getElementById("loginUser").value
+let pass=document.getElementById("loginPass").value
+
+let users=JSON.parse(localStorage.getItem("users")||"[]")
+
+let found=users.find(u=>u.user==user && u.pass==pass)
+
+if(found){
+
+currentUser=user
+
+currentOTP=Math.floor(1000+Math.random()*9000)
+
+alert("OTP Sent: "+currentOTP)
+
+document.getElementById("otpBox").style.display="block"
+
+}else{
+
+document.getElementById("loginMsg").innerText="Invalid credentials"
+
+}
+
+}
+
+/* OTP */
+
+function verifyOTP(){
+
+let otp=document.getElementById("otp").value
+
+if(otp==currentOTP){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("system").style.display="block"
+
+}else{
+
+alert("Wrong OTP")
+
+}
+
+}
+
+/* LOGOUT */
+
+function logout(){
+
+location.reload()
+
+}
+
+/* NAVIGATION */
+
+function show(id){
+
+["dashboard","add","records","analytics"].forEach(s=>{
+document.getElementById(s).style.display="none"
+})
+
+document.getElementById(id).style.display="block"
+
+}
+
+/* VIOLATIONS */
+
+function addViolation(){
+
+let vehicle=document.getElementById("vehicle").value
+let type=document.getElementById("type").value
+let fine=parseInt(document.getElementById("fine").value)
+
+let score=100-fine/10
+
+violations.push({vehicle,type,fine,score})
+
+updateTable()
+updateDashboard()
+updateChart()
+
+}
+
+function updateTable(){
+
+let html=""
+
+violations.forEach(v=>{
+
+html+=`
+<tr>
+<td>${v.vehicle}</td>
+<td>${v.type}</td>
+<td>${v.fine}</td>
+<td>${v.score}</td>
+</tr>
+`
+
+})
+
+document.getElementById("table").innerHTML=html
+
+}
+
+function updateDashboard(){
+
+document.getElementById("total").innerText=violations.length
+
+let vehicles=violations.map(v=>v.vehicle)
+let unique=new Set(vehicles)
+
+document.getElementById("repeat").innerText=violations.length-unique.size
+
+}
+
+function updateChart(){
+
+let chart=document.getElementById("chart")
+chart.innerHTML=""
+
+violations.forEach(v=>{
+
+let bar=document.createElement("div")
+bar.className="bar"
+bar.style.height=v.fine/2+"px"
+
+chart.appendChild(bar)
+
+})
+
+}
+
+/* AI DETECTION */
+
+function aiDetect(){
+
+let vehicles=["AP09AB1234","TS07XY4567","KA01CD7890"]
+
+let random=vehicles[Math.floor(Math.random()*vehicles.length)]
+
+alert("AI Detected Vehicle: "+random)
+
+}
+
+</script>
+
+</body>
+</html>
+```

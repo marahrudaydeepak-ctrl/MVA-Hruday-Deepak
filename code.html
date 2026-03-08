@@ -1,553 +1,3254 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>AI Digital Traffic Enforcement System</title>
+<!-- saved from url=(0061)https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
 
-<style>
+		<script type="module" src="./Digital Traffic Enforcement System - Government of India_files/client"></script>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
+		
+		<link rel="icon" type="image/svg+xml" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/vite.svg">
+		<meta name="generator" content="Hostinger Horizons">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Digital Traffic Enforcement System - Government of India</title>
+		<style>
+	#root[data-edit-mode-enabled="true"] [data-edit-id] {
+		cursor: pointer; 
+		outline: 2px dashed #357DF9; 
+		outline-offset: 2px;
+		min-height: 1em;
+	}
+	#root[data-edit-mode-enabled="true"] img[data-edit-id] {
+		outline-offset: -2px;
+	}
+	#root[data-edit-mode-enabled="true"] {
+		cursor: pointer;
+	}
+	#root[data-edit-mode-enabled="true"] [data-edit-id]:hover {
+		background-color: #357DF933;
+		outline-color: #357DF9; 
+	}
 
-body{
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-color:white;
-}
+	@keyframes fadeInTooltip {
+		from {
+			opacity: 0;
+			transform: translateY(5px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 
-header{
-background:black;
-padding:15px;
-font-size:24px;
-text-align:center;
-}
+	#inline-editor-disabled-tooltip {
+		display: none; 
+		opacity: 0; 
+		position: absolute;
+		background-color: #1D1E20;
+		color: white;
+		padding: 4px 8px;
+		border-radius: 8px;
+		z-index: 10001;
+		font-size: 14px;
+		border: 1px solid #3B3D4A;
+		max-width: 184px;
+		text-align: center;
+	}
 
-.container{
-display:flex;
-}
-
-.sidebar{
-width:230px;
-background:#111;
-height:100vh;
-padding:20px;
-}
-
-.sidebar button{
-width:100%;
-padding:12px;
-margin:6px 0;
-border:none;
-background:#333;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-
-.sidebar button:hover{
-background:#00c3ff;
-}
-
-.content{
-flex:1;
-padding:25px;
-}
-
-.card{
-background:#1a1a1a;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-}
-
-input,select{
-padding:10px;
-margin:5px;
-border:none;
-border-radius:5px;
-}
-
-button.action{
-background:#00c3ff;
-border:none;
-padding:10px 15px;
-color:white;
-cursor:pointer;
-border-radius:5px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid gray;
-}
-
-.login{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-flex-direction:column;
-}
-
-.chart{
-height:200px;
-display:flex;
-align-items:flex-end;
-gap:10px;
-margin-top:10px;
-}
-
-.bar{
-width:30px;
-background:#00c3ff;
-}
-
-.link{
-color:#00c3ff;
-cursor:pointer;
-margin-top:10px;
-}
-
+	#inline-editor-disabled-tooltip.tooltip-active {
+		display: block;
+		animation: fadeInTooltip 0.2s ease-out forwards;
+	}
 </style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-
-<div id="loginPage" class="login">
-
-<h2>🚦 Traffic System Login</h2>
-
-<input id="loginUser" placeholder="Username">
-<input id="loginPass" type="password" placeholder="Password">
-
-<button class="action" onclick="login()">Login</button>
-
-<div id="otpBox" style="display:none">
-
-<input id="otp" placeholder="Enter OTP">
-<button class="action" onclick="verifyOTP()">Verify OTP</button>
-
-</div>
-
-<p id="loginMsg"></p>
-
-<p class="link" onclick="showSignup()">Create Account</p>
-
-</div>
-
-<!-- SIGNUP -->
-
-<div id="signupPage" class="login" style="display:none">
-
-<h2>Signup</h2>
-
-<input id="signupUser" placeholder="Username">
-<input id="signupPass" type="password" placeholder="Password">
-
-<button class="action" onclick="signup()">Signup</button>
-
-<p id="signupMsg"></p>
-
-<p class="link" onclick="showLogin()">Back to Login</p>
-
-</div>
-
-<!-- SYSTEM -->
-
-<div id="system" style="display:none">
-
-<header>
-AI Digital Traffic Enforcement System
-<button onclick="logout()" style="float:right">Logout</button>
-</header>
-
-<div class="container">
-
-<div class="sidebar">
-
-<button onclick="show('dashboard')">Dashboard</button>
-<button onclick="show('add')">Add Violation</button>
-<button onclick="show('records')">Records</button>
-<button onclick="show('analytics')">Analytics</button>
-<button onclick="cameraDetect()">📷 Camera Detect</button>
-
-</div>
-
-<div class="content">
-
-<!-- DASHBOARD -->
-
-<div id="dashboard" class="card">
-
-<h3>Dashboard</h3>
-
-<p>Total Violations: <span id="total">0</span></p>
-<p>Repeat Offenders: <span id="repeat">0</span></p>
-
-</div>
-
-<!-- ADD VIOLATION -->
-
-<div id="add" class="card" style="display:none">
-
-<h3>Add Violation</h3>
-
-<input id="vehicle" placeholder="Vehicle Number">
-
-<select id="type">
-<option>Helmet Violation</option>
-<option>Signal Jump</option>
-<option>Over Speed</option>
-<option>Seatbelt Violation</option>
-</select>
-
-<input id="fine" placeholder="Fine Amount">
-
-<button class="action" onclick="addViolation()">Submit</button>
-
-</div>
-
-<!-- RECORDS -->
-
-<div id="records" class="card" style="display:none">
-
-<h3>Violation Records</h3>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Vehicle</th>
-<th>Violation</th>
-<th>Fine</th>
-<th>Score</th>
-<th>Payment</th>
-</tr>
-
-</thead>
-
-<tbody id="table"></tbody>
-
-</table>
-
-</div>
-
-<!-- ANALYTICS -->
-
-<div id="analytics" class="card" style="display:none">
-
-<h3>Fine Analytics</h3>
-
-<div class="chart" id="chart"></div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-let violations=[]
-let currentOTP=""
-
-/* vehicle database */
-
-let vehicleDB=[
-{number:"AP09AB1234",owner:"Rahul",license:"DL12345"},
-{number:"TS07XY4567",owner:"Arjun",license:"DL99882"},
-{number:"KA01CD7890",owner:"Suresh",license:"DL77766"}
-]
-
-/* signup */
-
-function signup(){
-
-let user=document.getElementById("signupUser").value
-let pass=document.getElementById("signupPass").value
-
-let users=JSON.parse(localStorage.getItem("users")||"[]")
-
-users.push({user,pass})
-
-localStorage.setItem("users",JSON.stringify(users))
-
-document.getElementById("signupMsg").innerText="Account Created"
-
-}
-
-/* login */
-
-function login(){
-
-let user=document.getElementById("loginUser").value
-let pass=document.getElementById("loginPass").value
-
-let users=JSON.parse(localStorage.getItem("users")||"[]")
-
-let found=users.find(u=>u.user==user && u.pass==pass)
-
-if(found){
-
-currentOTP=Math.floor(1000+Math.random()*9000)
-
-alert("OTP Sent: "+currentOTP)
-
-document.getElementById("otpBox").style.display="block"
-
-}else{
-
-document.getElementById("loginMsg").innerText="Invalid Login"
-
-}
-
-}
-
-function verifyOTP(){
-
-let otp=document.getElementById("otp").value
-
-if(otp==currentOTP){
-
-document.getElementById("loginPage").style.display="none"
-document.getElementById("system").style.display="block"
-
-}else{
-
-alert("Wrong OTP")
-
-}
-
-}
-
-function logout(){
-
-location.reload()
-
-}
-
-function showSignup(){
-
-document.getElementById("loginPage").style.display="none"
-document.getElementById("signupPage").style.display="flex"
-
-}
-
-function showLogin(){
-
-document.getElementById("signupPage").style.display="none"
-document.getElementById("loginPage").style.display="flex"
-
-}
-
-/* navigation */
-
-function show(id){
-
-["dashboard","add","records","analytics"].forEach(x=>{
-document.getElementById(x).style.display="none"
-})
-
-document.getElementById(id).style.display="block"
-
-}
-
-/* add violation */
-
-function addViolation(){
-
-let vehicle=document.getElementById("vehicle").value
-let type=document.getElementById("type").value
-let fine=parseInt(document.getElementById("fine").value)
-
-let score=100-fine/10
-
-violations.push({vehicle,type,fine,score})
-
-verifyLicense(vehicle)
-getLocation()
-sendEmail(vehicle,fine)
-sendSMS(vehicle,fine)
-
-updateTable()
-updateDashboard()
-updateChart()
-
-}
-
-/* license verify */
-
-function verifyLicense(vehicle){
-
-let found=vehicleDB.find(v=>v.number==vehicle)
-
-if(found){
-
-alert("License Verified\nOwner: "+found.owner)
-
-}else{
-
-alert("Vehicle not found in DB")
-
-}
-
-}
-
-/* location */
-
-function getLocation(){
-
-if(navigator.geolocation){
-
-navigator.geolocation.getCurrentPosition(function(pos){
-
-console.log("Location:",pos.coords.latitude,pos.coords.longitude)
-
-})
-
-}
-
-}
-
-/* email simulation */
-
-function sendEmail(vehicle,fine){
-
-console.log("Email sent for",vehicle,"fine",fine)
-
-}
-
-/* sms simulation */
-
-function sendSMS(vehicle,fine){
-
-console.log("SMS alert sent")
-
-}
-
-/* update table */
-
-function updateTable(){
-
-let html=""
-
-violations.forEach(v=>{
-
-html+=`
-
-<tr>
-
-<td>${v.vehicle}</td>
-<td>${v.type}</td>
-<td>${v.fine}</td>
-<td>${v.score}</td>
-<td><button onclick="payFine('${v.vehicle}',${v.fine})">Pay</button></td>
-
-</tr>
-
-`
-
-})
-
-document.getElementById("table").innerHTML=html
-
-}
-
-/* dashboard */
-
-function updateDashboard(){
-
-document.getElementById("total").innerText=violations.length
-
-let vehicles=violations.map(v=>v.vehicle)
-
-let unique=new Set(vehicles)
-
-document.getElementById("repeat").innerText=violations.length-unique.size
-
-}
-
-/* chart */
-
-function updateChart(){
-
-let chart=document.getElementById("chart")
-
-chart.innerHTML=""
-
-violations.forEach(v=>{
-
-let bar=document.createElement("div")
-
-bar.className="bar"
-
-bar.style.height=v.fine/2+"px"
-
-chart.appendChild(bar)
-
-})
-
-}
-
-/* payment */
-
-function payFine(vehicle,fine){
-
-let ok=confirm("Pay ₹"+fine+" ?")
-
-if(ok){
-
-alert("UPI Payment Successful")
-
-downloadChallan(vehicle,fine)
-
-}
-
-}
-
-/* challan download */
-
-function downloadChallan(vehicle,fine){
-
-let text="Traffic Challan\nVehicle:"+vehicle+"\nFine:"+fine
-
-let blob=new Blob([text])
-
-let a=document.createElement("a")
-
-a.href=URL.createObjectURL(blob)
-
-a.download="challan_"+vehicle+".txt"
-
-a.click()
-
-}
-
-/* camera detection */
-
-function cameraDetect(){
-
-let vehicles=["AP09AB1234","TS07XY4567","KA01CD7890"]
-
-let detected=vehicles[Math.floor(Math.random()*vehicles.length)]
-
-alert("Camera detected vehicle: "+detected)
-
-}
-
+		<script type="module">
+			const ALLOWED_PARENT_ORIGINS = [
+          "https://horizons.hostinger.com",
+          "https://horizons.hostinger.dev",
+          "https://horizons-frontend-local.hostinger.dev",
+      ];
+
+      // Check to see if the page is in an iframe
+      if (window.self !== window.top) {
+			const STORAGE_KEY = 'horizons-iframe-saved-route';
+
+			const getCurrentRoute = () => location.pathname + location.search + location.hash;
+
+			const save = () => {
+				try {
+					const currentRoute = getCurrentRoute();
+					sessionStorage.setItem(STORAGE_KEY, currentRoute);
+					window.parent.postMessage({message: 'route-changed', route: currentRoute}, '*');
+				} catch {}
+			};
+
+			const replaceHistoryState = (url) => {
+				try {
+					history.replaceState(null, '', url);
+					window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
+					return true;
+				} catch {}
+				return false;
+			};
+
+			const restore = () => {
+				try {
+					const saved = sessionStorage.getItem(STORAGE_KEY);
+					if (!saved) return;
+
+					if (!saved.startsWith('/')) {
+						sessionStorage.removeItem(STORAGE_KEY);
+						return;
+					}
+
+					const current = getCurrentRoute();
+					if (current !== saved) {
+						if (!replaceHistoryState(saved)) {
+							replaceHistoryState('/');
+						}
+
+						requestAnimationFrame(() => setTimeout(() => {
+							try {
+							const text = (document.body?.innerText || '').trim();
+
+							// If the restored route results in too little content, assume it is invalid and navigate home
+							if (text.length < 50) {
+								replaceHistoryState('/');
+							}
+							} catch {}
+						}, 1000));
+					}
+				} catch {}
+			};
+
+			const originalPushState = history.pushState;
+			history.pushState = function(...args) {
+				originalPushState.apply(this, args);
+				save();
+			};
+
+			const originalReplaceState = history.replaceState;
+			history.replaceState = function(...args) {
+				originalReplaceState.apply(this, args);
+				save();
+			};
+
+      const getParentOrigin = () => {
+          if (
+              window.location.ancestorOrigins &&
+              window.location.ancestorOrigins.length > 0
+          ) {
+              return window.location.ancestorOrigins[0];
+          }
+
+          if (document.referrer) {
+              try {
+                  return new URL(document.referrer).origin;
+              } catch (e) {
+                  console.warn("Invalid referrer URL:", document.referrer);
+              }
+          }
+
+          return null;
+      };
+
+			window.addEventListener('popstate', save);
+			window.addEventListener('hashchange', save);
+			window.addEventListener("message", function (event) {
+				const parentOrigin = getParentOrigin();
+
+				if (event.data?.type === "redirect-home" && parentOrigin && ALLOWED_PARENT_ORIGINS.includes(parentOrigin)) {
+                const saved = sessionStorage.getItem(STORAGE_KEY);
+
+                if(saved && saved !== '/') {
+                  replaceHistoryState('/')
+                }
+        }
+			});
+
+
+			restore();
+        }
+      </script>
+		<script type="module">
+                const ALLOWED_PARENT_ORIGINS = [
+                    "https://horizons.hostinger.com",
+                    "https://horizons.hostinger.dev",
+                    "https://horizons-frontend-local.hostinger.dev",
+                ];
+                const getParentOrigin = () => {
+                    if (
+                        window.location.ancestorOrigins &&
+                        window.location.ancestorOrigins.length > 0
+                    ) {
+                        return window.location.ancestorOrigins[0];
+                    }
+
+                    if (document.referrer) {
+                        try {
+                            return new URL(document.referrer).origin;
+                        } catch (e) {
+                            console.warn("Invalid referrer URL:", document.referrer);
+                        }
+                    }
+
+                    return null;
+                };
+                    
+                    
+                    
+                window.addEventListener("message", function (event) {
+                    const parentOrigin = getParentOrigin();
+
+                    if (event.data?.type === "database_preview_auth" && parentOrigin && ALLOWED_PARENT_ORIGINS.includes(parentOrigin)) {
+                        localStorage.setItem("__pb_superuser_auth__", event.data.value);
+                    }
+                });
+            </script>
+		<script type="module">
+window.onerror = (message, source, lineno, colno, errorObj) => {
+	const errorDetails = errorObj ? JSON.stringify({
+		name: errorObj.name,
+		message: errorObj.message,
+		stack: errorObj.stack,
+		source,
+		lineno,
+		colno,
+	}) : null;
+
+	window.parent.postMessage({
+		type: 'horizons-runtime-error',
+		message,
+		error: errorDetails
+	}, '*');
+};
 </script>
+		<script type="module">
+const observer = new MutationObserver((mutations) => {
+	for (const mutation of mutations) {
+		for (const addedNode of mutation.addedNodes) {
+			if (
+				addedNode.nodeType === Node.ELEMENT_NODE &&
+				(
+					addedNode.tagName?.toLowerCase() === 'vite-error-overlay' ||
+					addedNode.classList?.contains('backdrop')
+				)
+			) {
+				handleViteOverlay(addedNode);
+			}
+		}
+	}
+});
 
-</body>
-</html>
+observer.observe(document.documentElement, {
+	childList: true,
+	subtree: true
+});
+
+function handleViteOverlay(node) {
+	if (!node.shadowRoot) {
+		return;
+	}
+
+	const backdrop = node.shadowRoot.querySelector('.backdrop');
+
+	if (backdrop) {
+		const overlayHtml = backdrop.outerHTML;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(overlayHtml, 'text/html');
+		const messageBodyElement = doc.querySelector('.message-body');
+		const fileElement = doc.querySelector('.file');
+		const messageText = messageBodyElement ? messageBodyElement.textContent.trim() : '';
+		const fileText = fileElement ? fileElement.textContent.trim() : '';
+		const error = messageText + (fileText ? ' File:' + fileText : '');
+
+		window.parent.postMessage({
+			type: 'horizons-vite-error',
+			error,
+		}, '*');
+	}
+}
+</script>
+		<script type="module">
+const originalConsoleError = console.error;
+const MATCH_LINE_COL_REGEX = /:(\d+):(\d+)\)?\s*$/; // regex to match the :lineNum:colNum
+const MATCH_AT_REGEX = /^\s*at\s+(?:async\s+)?(?:.*?\s+)?\(?/; // regex to remove the 'at' keyword and any 'async' or function name
+const MATCH_PATH_REGEX = /^\//; // regex to remove the leading slash
+
+function parseStackFrameLine(line) {
+	const lineColMatch = line.match(MATCH_LINE_COL_REGEX);
+	if (!lineColMatch) return null;
+	const [, lineNum, colNum] = lineColMatch;
+	const suffix = `:${lineNum}:${colNum}`;
+	const idx = line.lastIndexOf(suffix);
+	if (idx === -1) return null;
+	const before = line.substring(0, idx);
+	const path = before.replace(MATCH_AT_REGEX, '').trim();
+	
+	if (!path) return null;
+
+	try {
+		const pathname = new URL(path).pathname;
+		const filePath = pathname.replace(MATCH_PATH_REGEX, '') || pathname;
+		return `${filePath}:${lineNum}:${colNum}`;
+	} catch (e) {
+		const filePath = path.replace(MATCH_PATH_REGEX, '') || path;
+		return `${filePath}:${lineNum}:${colNum}`;
+	}
+}
+
+function getFilePathFromStack(stack, skipFrames = 0) {
+	if (!stack || typeof stack !== 'string') return null;
+	const lines = stack.split('\n').slice(1);
+
+	const frames = lines.map(line => parseStackFrameLine(line.replace(/\r$/, ''))).filter(Boolean);
+
+	return frames[skipFrames] ?? null;
+}
+
+console.error = function(...args) {
+	originalConsoleError.apply(console, args);
+
+	let errorString = '';
+	let filePath = null;
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+		if (arg instanceof Error) {
+			filePath = getFilePathFromStack(arg.stack, 0);
+			errorString = `${arg.name}: ${arg.message}`;
+			if (filePath) {
+				errorString = `${errorString} at ${filePath}`;
+			}
+			break;
+		}
+	}
+
+	if (!errorString) {
+		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+		const stack = new Error().stack;
+		filePath = getFilePathFromStack(stack, 1);
+		if (filePath) {
+			errorString = `${errorString} at ${filePath}`;
+		}
+	}
+
+	window.parent.postMessage({
+		type: 'horizons-console-error',
+		error: errorString
+	}, '*');
+};
+</script>
+		<script type="module">
+const originalFetch = window.fetch;
+
+window.fetch = function(...args) {
+	const url = args[0] instanceof Request ? args[0].url : args[0];
+
+	// Skip WebSocket URLs
+	if (url.startsWith('ws:') || url.startsWith('wss:')) {
+		return originalFetch.apply(this, args);
+	}
+
+	return originalFetch.apply(this, args)
+		.then(async response => {
+			const contentType = response.headers.get('Content-Type') || '';
+
+			// Exclude HTML document responses
+			const isDocumentResponse =
+				contentType.includes('text/html') ||
+				contentType.includes('application/xhtml+xml');
+
+			if (!response.ok && !isDocumentResponse) {
+					const responseClone = response.clone();
+					const errorFromRes = await responseClone.text();
+					const requestUrl = response.url;
+					console.error(`Fetch error from ${requestUrl}: ${errorFromRes}`);
+			}
+
+			return response;
+		})
+		.catch(error => {
+			if (!url.match(/.html?$/i)) {
+				console.error(error);
+			}
+
+			throw error;
+		});
+};
+</script>
+		<script type="module">
+if (window.navigation && window.self !== window.top) {
+	window.navigation.addEventListener('navigate', (event) => {
+		const url = event.destination.url;
+
+		try {
+			const destinationUrl = new URL(url);
+			const destinationOrigin = destinationUrl.origin;
+			const currentOrigin = window.location.origin;
+
+			if (destinationOrigin === currentOrigin) {
+				return;
+			}
+		} catch (error) {
+			return;
+		}
+
+		window.parent.postMessage({
+			type: 'horizons-navigation-error',
+			url,
+		}, '*');
+	});
+}
+</script>
+	<style type="text/css" data-vite-dev-id="/home/u489888837/websites/SNzwKRNoV/public_html/apps/web/src/index.css">/*
+  TEMPLATE STYLES: These styles are used as a base template.
+  AI is allowed to modify these styles as needed.
+*/
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+/*
+  ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+*/
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+::before,
+::after {
+  --tw-content: '';
+}
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4; /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+/*
+Remove the default font size and weight for headings.
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+/*
+Add the correct font weight in Edge and Safari.
+*/
+b,
+strong {
+  font-weight: bolder;
+}
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+/*
+Add the correct font size in all browsers.
+*/
+small {
+  font-size: 80%;
+}
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+button,
+select {
+  text-transform: none;
+}
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+:-moz-focusring {
+  outline: auto;
+}
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+progress {
+  vertical-align: baseline;
+}
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+/*
+Add the correct display in Chrome and Safari.
+*/
+summary {
+  display: list-item;
+}
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+legend {
+  padding: 0;
+}
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+/*
+Prevent resizing textareas horizontally by default.
+*/
+textarea {
+  resize: vertical;
+}
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+input::-moz-placeholder, textarea::-moz-placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+/*
+Set the default cursor for buttons.
+*/
+button,
+[role="button"] {
+  cursor: pointer;
+}
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.pointer-events-auto {
+  pointer-events: auto;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.inset-0 {
+  inset: 0px;
+}
+.left-2 {
+  left: 0.5rem;
+}
+.left-\[50\%\] {
+  left: 50%;
+}
+.right-1 {
+  right: 0.25rem;
+}
+.right-2 {
+  right: 0.5rem;
+}
+.right-4 {
+  right: 1rem;
+}
+.top-0 {
+  top: 0px;
+}
+.top-1 {
+  top: 0.25rem;
+}
+.top-4 {
+  top: 1rem;
+}
+.top-\[50\%\] {
+  top: 50%;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-50 {
+  z-index: 50;
+}
+.z-\[100\] {
+  z-index: 100;
+}
+.-mx-1 {
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+}
+.-mx-6 {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+.-mt-6 {
+  margin-top: -1.5rem;
+}
+.mb-16 {
+  margin-bottom: 4rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.mb-8 {
+  margin-bottom: 2rem;
+}
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-1 {
+  margin-right: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.mt-8 {
+  margin-top: 2rem;
+}
+.flex {
+  display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.table {
+  display: table;
+}
+.grid {
+  display: grid;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-16 {
+  height: 4rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-3 {
+  height: 0.75rem;
+}
+.h-3\.5 {
+  height: 0.875rem;
+}
+.h-32 {
+  height: 8rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.h-6 {
+  height: 1.5rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+.h-96 {
+  height: 24rem;
+}
+.h-\[var\(--radix-select-trigger-height\)\] {
+  height: var(--radix-select-trigger-height);
+}
+.h-full {
+  height: 100%;
+}
+.h-px {
+  height: 1px;
+}
+.max-h-\[--radix-select-content-available-height\] {
+  max-height: var(--radix-select-content-available-height);
+}
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+.max-h-\[var\(--radix-dropdown-menu-content-available-height\)\] {
+  max-height: var(--radix-dropdown-menu-content-available-height);
+}
+.max-h-screen {
+  max-height: 100vh;
+}
+.min-h-\[60px\] {
+  min-height: 60px;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-16 {
+  width: 4rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.w-3 {
+  width: 0.75rem;
+}
+.w-3\.5 {
+  width: 0.875rem;
+}
+.w-32 {
+  width: 8rem;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-40 {
+  width: 10rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.w-56 {
+  width: 14rem;
+}
+.w-6 {
+  width: 1.5rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-9 {
+  width: 2.25rem;
+}
+.w-full {
+  width: 100%;
+}
+.min-w-\[8rem\] {
+  min-width: 8rem;
+}
+.min-w-\[var\(--radix-select-trigger-width\)\] {
+  min-width: var(--radix-select-trigger-width);
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-4xl {
+  max-width: 56rem;
+}
+.max-w-6xl {
+  max-width: 72rem;
+}
+.max-w-lg {
+  max-width: 32rem;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+.caption-bottom {
+  caption-side: bottom;
+}
+.origin-\[--radix-dropdown-menu-content-transform-origin\] {
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+.origin-\[--radix-select-content-transform-origin\] {
+  transform-origin: var(--radix-select-content-transform-origin);
+}
+.translate-x-\[-50\%\] {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.translate-y-\[-50\%\] {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+.cursor-default {
+  cursor: default;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.select-none {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.gap-6 {
+  gap: 1.5rem;
+}
+.gap-8 {
+  gap: 2rem;
+}
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.375rem * var(--tw-space-y-reverse));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.overflow-auto {
+  overflow: auto;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: var(--radius);
+}
+.rounded-md {
+  border-radius: calc(var(--radius) - 2px);
+}
+.rounded-sm {
+  border-radius: calc(var(--radius) - 4px);
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-t-lg {
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
+.border {
+  border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.border-t {
+  border-top-width: 1px;
+}
+.border-blue-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
+}
+.border-destructive {
+  border-color: hsl(var(--destructive));
+}
+.border-input {
+  border-color: hsl(var(--input));
+}
+.border-orange-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 215 170 / var(--tw-border-opacity, 1));
+}
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+}
+.border-slate-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(30 41 59 / var(--tw-border-opacity, 1));
+}
+.border-transparent {
+  border-color: transparent;
+}
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.bg-background {
+  background-color: hsl(var(--background));
+}
+.bg-black\/80 {
+  background-color: rgb(0 0 0 / 0.8);
+}
+.bg-blue-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+.bg-blue-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+.bg-card {
+  background-color: hsl(var(--card));
+}
+.bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
+}
+.bg-muted {
+  background-color: hsl(var(--muted));
+}
+.bg-muted\/50 {
+  background-color: hsl(var(--muted) / 0.5);
+}
+.bg-orange-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 247 237 / var(--tw-bg-opacity, 1));
+}
+.bg-popover {
+  background-color: hsl(var(--popover));
+}
+.bg-primary {
+  background-color: hsl(var(--primary));
+}
+.bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+.bg-slate-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-white\/10 {
+  background-color: rgb(255 255 255 / 0.1);
+}
+.bg-white\/95 {
+  background-color: rgb(255 255 255 / 0.95);
+}
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+.from-blue-50 {
+  --tw-gradient-from: #eff6ff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-blue-600 {
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-blue-900\/90 {
+  --tw-gradient-from: rgb(30 58 138 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(30 58 138 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-green-600 {
+  --tw-gradient-from: #16a34a var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(22 163 74 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-50 {
+  --tw-gradient-from: #f8fafc var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(248 250 252 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-slate-600 {
+  --tw-gradient-from: #475569 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(71 85 105 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.to-blue-800 {
+  --tw-gradient-to: #1e40af var(--tw-gradient-to-position);
+}
+.to-green-800 {
+  --tw-gradient-to: #166534 var(--tw-gradient-to-position);
+}
+.to-slate-100 {
+  --tw-gradient-to: #f1f5f9 var(--tw-gradient-to-position);
+}
+.to-slate-800 {
+  --tw-gradient-to: #1e293b var(--tw-gradient-to-position);
+}
+.to-slate-900\/90 {
+  --tw-gradient-to: rgb(15 23 42 / 0.9) var(--tw-gradient-to-position);
+}
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+.fill-current {
+  fill: currentColor;
+}
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-6 {
+  padding: 1.5rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pl-2 {
+  padding-left: 0.5rem;
+}
+.pl-8 {
+  padding-left: 2rem;
+}
+.pr-2 {
+  padding-right: 0.5rem;
+}
+.pr-6 {
+  padding-right: 1.5rem;
+}
+.pr-8 {
+  padding-right: 2rem;
+}
+.pt-0 {
+  padding-top: 0px;
+}
+.pt-8 {
+  padding-top: 2rem;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.align-middle {
+  vertical-align: middle;
+}
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.leading-none {
+  line-height: 1;
+}
+.leading-tight {
+  line-height: 1.25;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+.text-blue-100 {
+  --tw-text-opacity: 1;
+  color: rgb(219 234 254 / var(--tw-text-opacity, 1));
+}
+.text-blue-300 {
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
+}
+.text-blue-400 {
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity, 1));
+}
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+.text-blue-900 {
+  --tw-text-opacity: 1;
+  color: rgb(30 58 138 / var(--tw-text-opacity, 1));
+}
+.text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
+.text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+.text-foreground {
+  color: hsl(var(--foreground));
+}
+.text-foreground\/50 {
+  color: hsl(var(--foreground) / 0.5);
+}
+.text-green-600 {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
+}
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+.text-orange-800 {
+  --tw-text-opacity: 1;
+  color: rgb(154 52 18 / var(--tw-text-opacity, 1));
+}
+.text-orange-900 {
+  --tw-text-opacity: 1;
+  color: rgb(124 45 18 / var(--tw-text-opacity, 1));
+}
+.text-popover-foreground {
+  color: hsl(var(--popover-foreground));
+}
+.text-primary {
+  color: hsl(var(--primary));
+}
+.text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+.text-purple-600 {
+  --tw-text-opacity: 1;
+  color: rgb(147 51 234 / var(--tw-text-opacity, 1));
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+.text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+.text-slate-600 {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+.text-slate-900 {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.underline-offset-4 {
+  text-underline-offset: 4px;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-50 {
+  opacity: 0.5;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.opacity-90 {
+  opacity: 0.9;
+}
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.outline {
+  outline-style: solid;
+}
+.ring-offset-background {
+  --tw-ring-offset-color: hsl(var(--background));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.backdrop-filter {
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-shadow {
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
+  }
+}
+@keyframes exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
+  }
+}
+.duration-200 {
+  animation-duration: 200ms;
+}
+
+body {
+	font-family: 'DM Sans', sans-serif;
+  overflow-x: clip;
+}
+
+.file\:border-0::file-selector-button {
+  border-width: 0px;
+}
+
+.file\:bg-transparent::file-selector-button {
+  background-color: transparent;
+}
+
+.file\:text-sm::file-selector-button {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.file\:font-medium::file-selector-button {
+  font-weight: 500;
+}
+
+.file\:text-foreground::file-selector-button {
+  color: hsl(var(--foreground));
+}
+
+.placeholder\:text-muted-foreground::-moz-placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.placeholder\:text-muted-foreground::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.hover\:border-blue-500:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+}
+
+.hover\:bg-accent:hover {
+  background-color: hsl(var(--accent));
+}
+
+.hover\:bg-blue-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-destructive\/80:hover {
+  background-color: hsl(var(--destructive) / 0.8);
+}
+
+.hover\:bg-destructive\/90:hover {
+  background-color: hsl(var(--destructive) / 0.9);
+}
+
+.hover\:bg-green-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-muted\/50:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.hover\:bg-primary\/80:hover {
+  background-color: hsl(var(--primary) / 0.8);
+}
+
+.hover\:bg-primary\/90:hover {
+  background-color: hsl(var(--primary) / 0.9);
+}
+
+.hover\:bg-secondary:hover {
+  background-color: hsl(var(--secondary));
+}
+
+.hover\:bg-secondary\/80:hover {
+  background-color: hsl(var(--secondary) / 0.8);
+}
+
+.hover\:bg-white\/10:hover {
+  background-color: rgb(255 255 255 / 0.1);
+}
+
+.hover\:text-accent-foreground:hover {
+  color: hsl(var(--accent-foreground));
+}
+
+.hover\:text-blue-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-foreground:hover {
+  color: hsl(var(--foreground));
+}
+
+.hover\:text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+
+.hover\:opacity-100:hover {
+  opacity: 1;
+}
+
+.hover\:shadow-lg:hover {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.focus\:bg-accent:focus {
+  background-color: hsl(var(--accent));
+}
+
+.focus\:text-accent-foreground:focus {
+  color: hsl(var(--accent-foreground));
+}
+
+.focus\:opacity-100:focus {
+  opacity: 1;
+}
+
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:ring-1:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-ring:focus {
+  --tw-ring-color: hsl(var(--ring));
+}
+
+.focus\:ring-offset-2:focus {
+  --tw-ring-offset-width: 2px;
+}
+
+.focus-visible\:outline-none:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-visible\:ring-1:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus-visible\:ring-2:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus-visible\:ring-ring:focus-visible {
+  --tw-ring-color: hsl(var(--ring));
+}
+
+.focus-visible\:ring-offset-2:focus-visible {
+  --tw-ring-offset-width: 2px;
+}
+
+.disabled\:pointer-events-none:disabled {
+  pointer-events: none;
+}
+
+.disabled\:cursor-not-allowed:disabled {
+  cursor: not-allowed;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+
+.group:hover .group-hover\:scale-110 {
+  --tw-scale-x: 1.1;
+  --tw-scale-y: 1.1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+
+.group.destructive .group-\[\.destructive\]\:border-muted\/40 {
+  border-color: hsl(var(--muted) / 0.4);
+}
+
+.group.destructive .group-\[\.destructive\]\:text-red-300 {
+  --tw-text-opacity: 1;
+  color: rgb(252 165 165 / var(--tw-text-opacity, 1));
+}
+
+.group.destructive .group-\[\.destructive\]\:hover\:border-destructive\/30:hover {
+  border-color: hsl(var(--destructive) / 0.3);
+}
+
+.group.destructive .group-\[\.destructive\]\:hover\:bg-destructive:hover {
+  background-color: hsl(var(--destructive));
+}
+
+.group.destructive .group-\[\.destructive\]\:hover\:text-destructive-foreground:hover {
+  color: hsl(var(--destructive-foreground));
+}
+
+.group.destructive .group-\[\.destructive\]\:hover\:text-red-50:hover {
+  --tw-text-opacity: 1;
+  color: rgb(254 242 242 / var(--tw-text-opacity, 1));
+}
+
+.group.destructive .group-\[\.destructive\]\:focus\:ring-destructive:focus {
+  --tw-ring-color: hsl(var(--destructive));
+}
+
+.group.destructive .group-\[\.destructive\]\:focus\:ring-red-400:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(248 113 113 / var(--tw-ring-opacity, 1));
+}
+
+.group.destructive .group-\[\.destructive\]\:focus\:ring-offset-red-600:focus {
+  --tw-ring-offset-color: #dc2626;
+}
+
+.peer:disabled ~ .peer-disabled\:cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.peer:disabled ~ .peer-disabled\:opacity-70 {
+  opacity: 0.7;
+}
+
+.data-\[disabled\]\:pointer-events-none[data-disabled] {
+  pointer-events: none;
+}
+
+.data-\[side\=bottom\]\:translate-y-1[data-side="bottom"] {
+  --tw-translate-y: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[side\=left\]\:-translate-x-1[data-side="left"] {
+  --tw-translate-x: -0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[side\=right\]\:translate-x-1[data-side="right"] {
+  --tw-translate-x: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[side\=top\]\:-translate-y-1[data-side="top"] {
+  --tw-translate-y: -0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[swipe\=cancel\]\:translate-x-0[data-swipe="cancel"] {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[swipe\=end\]\:translate-x-\[var\(--radix-toast-swipe-end-x\)\][data-swipe="end"] {
+  --tw-translate-x: var(--radix-toast-swipe-end-x);
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[swipe\=move\]\:translate-x-\[var\(--radix-toast-swipe-move-x\)\][data-swipe="move"] {
+  --tw-translate-x: var(--radix-toast-swipe-move-x);
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[state\=active\]\:bg-background[data-state="active"] {
+  background-color: hsl(var(--background));
+}
+
+.data-\[state\=open\]\:bg-accent[data-state="open"] {
+  background-color: hsl(var(--accent));
+}
+
+.data-\[state\=selected\]\:bg-muted[data-state="selected"] {
+  background-color: hsl(var(--muted));
+}
+
+.data-\[placeholder\]\:text-muted-foreground[data-placeholder] {
+  color: hsl(var(--muted-foreground));
+}
+
+.data-\[state\=active\]\:text-foreground[data-state="active"] {
+  color: hsl(var(--foreground));
+}
+
+.data-\[state\=open\]\:text-muted-foreground[data-state="open"] {
+  color: hsl(var(--muted-foreground));
+}
+
+.data-\[disabled\]\:opacity-50[data-disabled] {
+  opacity: 0.5;
+}
+
+.data-\[state\=active\]\:shadow[data-state="active"] {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.data-\[swipe\=move\]\:transition-none[data-swipe="move"] {
+  transition-property: none;
+}
+
+.data-\[state\=open\]\:animate-in[data-state="open"] {
+  animation-name: enter;
+  animation-duration: 150ms;
+  --tw-enter-opacity: initial;
+  --tw-enter-scale: initial;
+  --tw-enter-rotate: initial;
+  --tw-enter-translate-x: initial;
+  --tw-enter-translate-y: initial;
+}
+
+.data-\[state\=closed\]\:animate-out[data-state="closed"] {
+  animation-name: exit;
+  animation-duration: 150ms;
+  --tw-exit-opacity: initial;
+  --tw-exit-scale: initial;
+  --tw-exit-rotate: initial;
+  --tw-exit-translate-x: initial;
+  --tw-exit-translate-y: initial;
+}
+
+.data-\[swipe\=end\]\:animate-out[data-swipe="end"] {
+  animation-name: exit;
+  animation-duration: 150ms;
+  --tw-exit-opacity: initial;
+  --tw-exit-scale: initial;
+  --tw-exit-rotate: initial;
+  --tw-exit-translate-x: initial;
+  --tw-exit-translate-y: initial;
+}
+
+.data-\[state\=closed\]\:fade-out-0[data-state="closed"] {
+  --tw-exit-opacity: 0;
+}
+
+.data-\[state\=closed\]\:fade-out-80[data-state="closed"] {
+  --tw-exit-opacity: 0.8;
+}
+
+.data-\[state\=open\]\:fade-in-0[data-state="open"] {
+  --tw-enter-opacity: 0;
+}
+
+.data-\[state\=closed\]\:zoom-out-95[data-state="closed"] {
+  --tw-exit-scale: .95;
+}
+
+.data-\[state\=open\]\:zoom-in-95[data-state="open"] {
+  --tw-enter-scale: .95;
+}
+
+.data-\[side\=bottom\]\:slide-in-from-top-2[data-side="bottom"] {
+  --tw-enter-translate-y: -0.5rem;
+}
+
+.data-\[side\=left\]\:slide-in-from-right-2[data-side="left"] {
+  --tw-enter-translate-x: 0.5rem;
+}
+
+.data-\[side\=right\]\:slide-in-from-left-2[data-side="right"] {
+  --tw-enter-translate-x: -0.5rem;
+}
+
+.data-\[side\=top\]\:slide-in-from-bottom-2[data-side="top"] {
+  --tw-enter-translate-y: 0.5rem;
+}
+
+.data-\[state\=closed\]\:slide-out-to-left-1\/2[data-state="closed"] {
+  --tw-exit-translate-x: -50%;
+}
+
+.data-\[state\=closed\]\:slide-out-to-right-full[data-state="closed"] {
+  --tw-exit-translate-x: 100%;
+}
+
+.data-\[state\=closed\]\:slide-out-to-top-\[48\%\][data-state="closed"] {
+  --tw-exit-translate-y: -48%;
+}
+
+.data-\[state\=open\]\:slide-in-from-left-1\/2[data-state="open"] {
+  --tw-enter-translate-x: -50%;
+}
+
+.data-\[state\=open\]\:slide-in-from-top-\[48\%\][data-state="open"] {
+  --tw-enter-translate-y: -48%;
+}
+
+.data-\[state\=open\]\:slide-in-from-top-full[data-state="open"] {
+  --tw-enter-translate-y: -100%;
+}
+
+@supports ((-webkit-backdrop-filter: var(--tw)) or (backdrop-filter: var(--tw))) {
+  .supports-\[backdrop-filter\]\:bg-white\/60 {
+    background-color: rgb(255 255 255 / 0.6);
+  }
+}
+
+.dark\:border-orange-800:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(154 52 18 / var(--tw-border-opacity, 1));
+}
+
+.dark\:border-slate-700:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(51 65 85 / var(--tw-border-opacity, 1));
+}
+
+.dark\:border-slate-800:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(30 41 59 / var(--tw-border-opacity, 1));
+}
+
+.dark\:bg-blue-900\/30:is(.dark *) {
+  background-color: rgb(30 58 138 / 0.3);
+}
+
+.dark\:bg-orange-950\/20:is(.dark *) {
+  background-color: rgb(67 20 7 / 0.2);
+}
+
+.dark\:bg-slate-700:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 65 85 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:bg-slate-800:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:bg-slate-900:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:bg-slate-900\/95:is(.dark *) {
+  background-color: rgb(15 23 42 / 0.95);
+}
+
+.dark\:from-slate-900:is(.dark *) {
+  --tw-gradient-from: #0f172a var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(15 23 42 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark\:to-slate-800:is(.dark *) {
+  --tw-gradient-to: #1e293b var(--tw-gradient-to-position);
+}
+
+.dark\:text-blue-400:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-orange-100:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(255 237 213 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-orange-200:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(254 215 170 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-slate-400:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-white:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+@supports ((-webkit-backdrop-filter: var(--tw)) or (backdrop-filter: var(--tw))) {
+  .dark\:supports-\[backdrop-filter\]\:bg-slate-900\/60:is(.dark *) {
+    background-color: rgb(15 23 42 / 0.6);
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:bottom-0 {
+    bottom: 0px;
+  }
+  .sm\:right-0 {
+    right: 0px;
+  }
+  .sm\:top-auto {
+    top: auto;
+  }
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+  .sm\:justify-end {
+    justify-content: flex-end;
+  }
+  .sm\:space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+  .sm\:rounded-lg {
+    border-radius: var(--radius);
+  }
+  .sm\:text-left {
+    text-align: left;
+  }
+  .data-\[state\=open\]\:sm\:slide-in-from-bottom-full[data-state="open"] {
+    --tw-enter-translate-y: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:max-w-\[420px\] {
+    max-width: 420px;
+  }
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .md\:py-32 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  .md\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.\[\&\+div\]\:text-xs+div {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.\[\&\:has\(\[role\=checkbox\]\)\]\:pr-0:has([role=checkbox]) {
+  padding-right: 0px;
+}
+
+.\[\&\>\[role\=checkbox\]\]\:translate-y-\[2px\]>[role=checkbox] {
+  --tw-translate-y: 2px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.\[\&\>span\]\:line-clamp-1>span {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.\[\&\>svg\]\:size-4>svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.\[\&\>svg\]\:shrink-0>svg {
+  flex-shrink: 0;
+}
+
+.\[\&\>tr\]\:last\:border-b-0:last-child>tr {
+  border-bottom-width: 0px;
+}
+
+.\[\&_svg\]\:pointer-events-none svg {
+  pointer-events: none;
+}
+
+.\[\&_svg\]\:size-4 svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.\[\&_svg\]\:shrink-0 svg {
+  flex-shrink: 0;
+}
+
+.\[\&_tr\:last-child\]\:border-0 tr:last-child {
+  border-width: 0px;
+}
+
+.\[\&_tr\]\:border-b tr {
+  border-bottom-width: 1px;
+}
+</style><meta name="description" content="Secure, transparent, and efficient traffic violation management system for India" data-react-helmet="true"></head>
+	<body>
+		<div id="root"><div class="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800"><header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-slate-900/60" style="transform: none;"><div class="container mx-auto px-4 h-16 flex items-center justify-between"><a class="flex items-center space-x-3 group" data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/" data-discover="true"><div class="bg-gradient-to-br from-blue-600 to-blue-800 p-2 rounded-lg group-hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-6 w-6 text-white"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><div><h1 class="text-lg font-bold text-slate-900 dark:text-white" data-edit-disabled="true">Digital Traffic Enforcement</h1><p class="text-xs text-slate-600 dark:text-slate-400" data-edit-disabled="true">Government of India</p></div></a><nav class="flex items-center space-x-4"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 w-9 rounded-full" data-edit-disabled="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon h-5 w-5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></button><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 w-9 rounded-full" data-edit-disabled="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe h-5 w-5"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg><span class="ml-1 text-xs" data-edit-disabled="true">HI</span></button><div class="flex items-center space-x-2"><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs" data-edit-disabled="true">Login</button></a><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/signup" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-primary-foreground shadow h-8 rounded-md px-3 text-xs bg-blue-600 hover:bg-blue-700" data-edit-disabled="true">Sign Up</button></a></div></nav></div></header><section class="relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-br from-blue-900/90 to-slate-900/90 z-10"></div><img src="./Digital Traffic Enforcement System - Government of India_files/photo-1697638164340-6c5fc558bdf2" alt="Traffic enforcement officer monitoring road safety" class="absolute inset-0 w-full h-full object-cover" data-edit-id="apps/web/src/pages/HomePage.jsx:92:11"><div class="relative z-20 container mx-auto px-4 py-24 md:py-32"><div class="max-w-4xl mx-auto text-center text-white" style="opacity: 1; transform: none;"><div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6" style="transform: none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-5 w-5 text-blue-300"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg><span class="text-sm font-medium" data-edit-disabled="true">Government of India Initiative</span></div><h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight" data-edit-disabled="true">Digital Traffic Enforcement System</h1><p class="text-xl md:text-2xl mb-8 text-blue-100" data-edit-disabled="true">Secure, Transparent, and Efficient Traffic Violation Management</p><div class="flex flex-col sm:flex-row gap-4 justify-center"><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/signup" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 shadow h-10 rounded-md bg-white text-blue-900 hover:bg-blue-50 text-lg px-8" data-edit-disabled="true" fdprocessedid="7bbpx">Get Started</button></a><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background shadow-sm hover:text-accent-foreground h-10 rounded-md border-white text-white hover:bg-white/10 text-lg px-8" data-edit-disabled="true" fdprocessedid="60oosd">Login</button></a></div></div></div></section><section class="py-20 bg-white dark:bg-slate-900"><div class="container mx-auto px-4"><div class="text-center mb-16" style="opacity: 0; transform: translateY(20px);"><h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4" data-edit-disabled="true">Key Features</h2><p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto" data-edit-disabled="true">Comprehensive tools for modern traffic enforcement and management</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-6 w-6 text-blue-600 dark:text-blue-400"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Secure &amp; Tamper-Proof</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Blockchain-inspired violation records with cryptographic hashing</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-car h-6 w-6 text-blue-600 dark:text-blue-400"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Vehicle Management</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Complete vehicle registration, insurance, and license tracking</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text h-6 w-6 text-blue-600 dark:text-blue-400"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Digital Challans</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Instant violation recording with automated fine calculation</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column h-6 w-6 text-blue-600 dark:text-blue-400"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Analytics Dashboard</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Real-time insights on violations, trends, and enforcement</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock h-6 w-6 text-blue-600 dark:text-blue-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Real-Time Tracking</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Monitor violations, payments, and license status instantly</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock h-6 w-6 text-blue-600 dark:text-blue-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Role-Based Access</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Secure access control for admins, officers, and citizens</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-6 w-6 text-blue-600 dark:text-blue-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Multi-User Support</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Separate portals for administrators, police, and citizens</div></div></div></div><div style="opacity: 0; transform: translateY(20px);"><div class="rounded-xl border bg-card text-card-foreground shadow h-full hover:shadow-lg transition-shadow border-slate-200 dark:border-slate-700"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert h-6 w-6 text-blue-600 dark:text-blue-400"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></div><div class="font-semibold leading-none tracking-tight text-slate-900 dark:text-white">Automated Alerts</div></div><div class="p-6 pt-0"><div class="text-sm text-slate-600 dark:text-slate-400">Notifications for license/insurance expiry and repeat offenders</div></div></div></div></div></div></section><section class="py-20 bg-slate-50 dark:bg-slate-800"><div class="container mx-auto px-4"><div class="text-center mb-16" style="opacity: 0; transform: translateY(20px);"><h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4" data-edit-disabled="true">Access Your Portal</h2><p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto" data-edit-disabled="true">Choose your role to access the appropriate dashboard</p></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"><div class="group" style="opacity: 0; transform: scale(0.9);"><div class="rounded-xl bg-card text-card-foreground shadow h-full border-2 border-transparent hover:border-blue-500 transition-all"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-gradient-to-br from-blue-600 to-blue-800 h-32 -mx-6 -mt-6 mb-6 rounded-t-lg flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-16 w-16 text-white"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><div class="font-semibold tracking-tight text-xl text-slate-900 dark:text-white">Admin Portal</div></div><div class="p-6 pt-0 space-y-4"><div class="text-sm text-slate-600 dark:text-slate-400">Manage system, users, vehicles, and view comprehensive analytics</div><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-primary-foreground shadow h-9 px-4 py-2 w-full bg-blue-600 hover:bg-blue-700" data-edit-disabled="true" fdprocessedid="nwq2tc">Access Portal</button></a></div></div></div><div class="group" style="opacity: 0; transform: scale(0.9);"><div class="rounded-xl bg-card text-card-foreground shadow h-full border-2 border-transparent hover:border-blue-500 transition-all"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-gradient-to-br from-slate-600 to-slate-800 h-32 -mx-6 -mt-6 mb-6 rounded-t-lg flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-16 w-16 text-white"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><div class="font-semibold tracking-tight text-xl text-slate-900 dark:text-white">Police Officer Portal</div></div><div class="p-6 pt-0 space-y-4"><div class="text-sm text-slate-600 dark:text-slate-400">Record violations, issue challans, and monitor enforcement</div><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-primary-foreground shadow h-9 px-4 py-2 w-full bg-blue-600 hover:bg-blue-700" data-edit-disabled="true" fdprocessedid="b72mvo">Access Portal</button></a></div></div></div><div class="group" style="opacity: 0; transform: scale(0.9);"><div class="rounded-xl bg-card text-card-foreground shadow h-full border-2 border-transparent hover:border-blue-500 transition-all"><div class="flex flex-col space-y-1.5 p-6"><div class="bg-gradient-to-br from-green-600 to-green-800 h-32 -mx-6 -mt-6 mb-6 rounded-t-lg flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-16 w-16 text-white"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><div class="font-semibold tracking-tight text-xl text-slate-900 dark:text-white">Citizen Portal</div></div><div class="p-6 pt-0 space-y-4"><div class="text-sm text-slate-600 dark:text-slate-400">View violations, track payments, and manage vehicle documents</div><a data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-primary-foreground shadow h-9 px-4 py-2 w-full bg-blue-600 hover:bg-blue-700" data-edit-disabled="true" fdprocessedid="0wiz1f">Access Portal</button></a></div></div></div></div></div></section><footer class="bg-slate-900 text-white py-12"><div class="container mx-auto px-4"><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div><div class="flex items-center space-x-2 mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield h-6 w-6 text-blue-400"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg><span class="font-bold text-lg" data-edit-disabled="true">Digital Traffic Enforcement</span></div><p class="text-slate-400 text-sm" data-edit-disabled="true">Government of India initiative for transparent and efficient traffic management</p></div><div><h3 class="font-semibold mb-4" data-edit-disabled="true">Quick Links</h3><ul class="space-y-2 text-sm text-slate-400"><li><a class="hover:text-white transition-colors" data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/login" data-discover="true">Login</a></li><li><a class="hover:text-white transition-colors" data-edit-disabled="true" href="https://47f638c7-e9b7-4bc0-8458-a08e7870c848.app-preview.com/signup" data-discover="true">Sign Up</a></li></ul></div><div><h3 class="font-semibold mb-4" data-edit-disabled="true">Contact</h3><p class="text-sm text-slate-400" data-edit-disabled="true">Ministry of Road Transport &amp; Highways<br>Government of India</p></div></div><div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400"><p data-edit-disabled="true">© 2026 Digital Traffic Enforcement System. All rights reserved.</p></div></div></footer></div></div>
+		<script type="module" src="./Digital Traffic Enforcement System - Government of India_files/main.jsx"></script>
+		<script type="module">// eslint-disable-next-line import/no-unresolved
+import { POPUP_STYLES } from "./plugins/visual-editor/visual-editor-config.js";
+
+const PLUGIN_APPLY_EDIT_API_URL = "/api/apply-edit";
+
+const ALLOWED_PARENT_ORIGINS = [
+	"https://horizons.hostinger.com",
+	"https://horizons.hostinger.dev",
+	"https://horizons-frontend-local.hostinger.dev",
+	"http://localhost:4000",
+];
+
+let disabledTooltipElement = null;
+let currentDisabledHoverElement = null;
+
+let translations = {
+	disabledTooltipText: "This text can be changed only through chat.",
+	disabledTooltipTextImage: "This image can only be changed through chat.",
+};
+
+let areStylesInjected = false;
+
+let globalEventHandlers = null;
+
+let currentEditingInfo = null;
+
+function injectPopupStyles() {
+	if (areStylesInjected) return;
+
+	const styleElement = document.createElement("style");
+	styleElement.id = "inline-editor-styles";
+	styleElement.textContent = POPUP_STYLES;
+	document.head.appendChild(styleElement);
+	areStylesInjected = true;
+}
+
+function findEditableElementAtPoint(event) {
+	let editableElement = event.target.closest("[data-edit-id]");
+
+	if (editableElement) {
+		return editableElement;
+	}
+
+	const elementsAtPoint = document.elementsFromPoint(
+		event.clientX,
+		event.clientY
+	);
+
+	const found = elementsAtPoint.find(
+		(el) => el !== event.target && el.hasAttribute("data-edit-id")
+	);
+	if (found) return found;
+
+	return null;
+}
+
+function findDisabledElementAtPoint(event) {
+	const direct = event.target.closest("[data-edit-disabled]");
+	if (direct) return direct;
+	const elementsAtPoint = document.elementsFromPoint(
+		event.clientX,
+		event.clientY
+	);
+	const found = elementsAtPoint.find(
+		(el) => el !== event.target && el.hasAttribute("data-edit-disabled")
+	);
+	if (found) return found;
+	return null;
+}
+
+function showPopup(targetElement, editId, currentContent, isImage = false) {
+	currentEditingInfo = { editId, targetElement };
+
+	const parentOrigin = getParentOrigin();
+
+	if (parentOrigin && ALLOWED_PARENT_ORIGINS.includes(parentOrigin)) {
+		const eventType = isImage ? "imageEditEnter" : "editEnter";
+
+		window.parent.postMessage(
+			{
+				type: eventType,
+				payload: { currentText: currentContent },
+			},
+			parentOrigin
+		);
+	}
+}
+
+function handleGlobalEvent(event) {
+	if (
+		!document.getElementById("root")?.getAttribute("data-edit-mode-enabled")
+	) {
+		return;
+	}
+
+	// Don't handle if selection mode is active
+	if (document.getElementById("root")?.getAttribute("data-selection-mode-enabled") === "true") {
+		return;
+	}
+
+	if (event.target.closest("#inline-editor-popup")) {
+		return;
+	}
+
+	const editableElement = findEditableElementAtPoint(event);
+
+	if (editableElement) {
+		event.preventDefault();
+		event.stopPropagation();
+		event.stopImmediatePropagation();
+
+		if (event.type === "click") {
+			const editId = editableElement.getAttribute("data-edit-id");
+			if (!editId) {
+				console.warn("[INLINE EDITOR] Clicked element missing data-edit-id");
+				return;
+			}
+
+			const isImage = editableElement.tagName.toLowerCase() === "img";
+			let currentContent = "";
+
+			if (isImage) {
+				currentContent = editableElement.getAttribute("src") || "";
+			} else {
+				currentContent = editableElement.textContent || "";
+			}
+
+			showPopup(editableElement, editId, currentContent, isImage);
+		}
+	} else {
+		event.preventDefault();
+		event.stopPropagation();
+		event.stopImmediatePropagation();
+	}
+}
+
+function getParentOrigin() {
+	if (
+		window.location.ancestorOrigins &&
+		window.location.ancestorOrigins.length > 0
+	) {
+		return window.location.ancestorOrigins[0];
+	}
+
+	if (document.referrer) {
+		try {
+			return new URL(document.referrer).origin;
+		} catch (e) {
+			console.warn("Invalid referrer URL:", document.referrer);
+		}
+	}
+
+	return null;
+}
+
+async function handleEditSave(updatedText) {
+	const newText = updatedText
+		// Replacing characters that cause Babel parser to crash
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/{/g, "&#123;")
+		.replace(/}/g, "&#125;");
+
+	const { editId } = currentEditingInfo;
+
+	try {
+		const response = await fetch(PLUGIN_APPLY_EDIT_API_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				editId: editId,
+				newFullText: newText,
+			}),
+		});
+
+		const result = await response.json();
+		if (result.success) {
+			const parentOrigin = getParentOrigin();
+			if (parentOrigin && ALLOWED_PARENT_ORIGINS.includes(parentOrigin)) {
+				window.parent.postMessage(
+					{
+						type: "editApplied",
+						payload: {
+							editId: editId,
+							fileContent: result.newFileContent,
+							beforeCode: result.beforeCode,
+							afterCode: result.afterCode,
+						},
+					},
+					parentOrigin
+				);
+			} else {
+				console.error("Unauthorized parent origin:", parentOrigin);
+			}
+		} else {
+			console.error(
+				`[vite][visual-editor] Error saving changes: ${result.error}`
+			);
+		}
+	} catch (error) {
+		console.error(
+			`[vite][visual-editor] Error during fetch for ${editId}:`,
+			error
+		);
+	}
+}
+
+function createDisabledTooltip() {
+	if (disabledTooltipElement) return;
+
+	disabledTooltipElement = document.createElement("div");
+	disabledTooltipElement.id = "inline-editor-disabled-tooltip";
+	document.body.appendChild(disabledTooltipElement);
+}
+
+function showDisabledTooltip(targetElement, isImage = false) {
+	if (!disabledTooltipElement) createDisabledTooltip();
+
+	disabledTooltipElement.textContent = isImage
+		? translations.disabledTooltipTextImage
+		: translations.disabledTooltipText;
+
+	if (!disabledTooltipElement.isConnected) {
+		document.body.appendChild(disabledTooltipElement);
+	}
+	disabledTooltipElement.classList.add("tooltip-active");
+
+	const tooltipWidth = disabledTooltipElement.offsetWidth;
+	const tooltipHeight = disabledTooltipElement.offsetHeight;
+	const rect = targetElement.getBoundingClientRect();
+
+	// Ensures that tooltip is not off the screen with 5px margin
+	let newLeft = rect.left + window.scrollX + rect.width / 2 - tooltipWidth / 2;
+	let newTop = rect.bottom + window.scrollY + 5;
+
+	if (newLeft < window.scrollX) {
+		newLeft = window.scrollX + 5;
+	}
+	if (newLeft + tooltipWidth > window.innerWidth + window.scrollX) {
+		newLeft = window.innerWidth + window.scrollX - tooltipWidth - 5;
+	}
+	if (newTop + tooltipHeight > window.innerHeight + window.scrollY) {
+		newTop = rect.top + window.scrollY - tooltipHeight - 5;
+	}
+	if (newTop < window.scrollY) {
+		newTop = window.scrollY + 5;
+	}
+
+	disabledTooltipElement.style.left = `${newLeft}px`;
+	disabledTooltipElement.style.top = `${newTop}px`;
+}
+
+function hideDisabledTooltip() {
+	if (disabledTooltipElement) {
+		disabledTooltipElement.classList.remove("tooltip-active");
+	}
+}
+
+function handleDisabledElementHover(event) {
+	const isImage = event.currentTarget.tagName.toLowerCase() === "img";
+
+	showDisabledTooltip(event.currentTarget, isImage);
+}
+
+function handleDisabledElementLeave() {
+	hideDisabledTooltip();
+}
+
+function handleDisabledGlobalHover(event) {
+	const disabledElement = findDisabledElementAtPoint(event);
+	if (disabledElement) {
+		if (currentDisabledHoverElement !== disabledElement) {
+			currentDisabledHoverElement = disabledElement;
+			const isImage = disabledElement.tagName.toLowerCase() === "img";
+			showDisabledTooltip(disabledElement, isImage);
+		}
+	} else {
+		if (currentDisabledHoverElement) {
+			currentDisabledHoverElement = null;
+			hideDisabledTooltip();
+		}
+	}
+}
+
+function enableEditMode() {
+	// Don't enable if selection mode is active
+	if (document.getElementById("root")?.getAttribute("data-selection-mode-enabled") === "true") {
+		console.warn("[EDIT MODE] Cannot enable edit mode while selection mode is active");
+		return;
+	}
+
+	document
+		.getElementById("root")
+		?.setAttribute("data-edit-mode-enabled", "true");
+
+	injectPopupStyles();
+
+	if (!globalEventHandlers) {
+		globalEventHandlers = {
+			mousedown: handleGlobalEvent,
+			pointerdown: handleGlobalEvent,
+			click: handleGlobalEvent,
+		};
+
+		Object.entries(globalEventHandlers).forEach(([eventType, handler]) => {
+			document.addEventListener(eventType, handler, true);
+		});
+	}
+
+	document.addEventListener("mousemove", handleDisabledGlobalHover, true);
+
+	document.querySelectorAll("[data-edit-disabled]").forEach((el) => {
+		el.removeEventListener("mouseenter", handleDisabledElementHover);
+		el.addEventListener("mouseenter", handleDisabledElementHover);
+		el.removeEventListener("mouseleave", handleDisabledElementLeave);
+		el.addEventListener("mouseleave", handleDisabledElementLeave);
+	});
+}
+
+function disableEditMode() {
+	document.getElementById("root")?.removeAttribute("data-edit-mode-enabled");
+
+	hideDisabledTooltip();
+
+	if (globalEventHandlers) {
+		Object.entries(globalEventHandlers).forEach(([eventType, handler]) => {
+			document.removeEventListener(eventType, handler, true);
+		});
+		globalEventHandlers = null;
+	}
+
+	document.removeEventListener("mousemove", handleDisabledGlobalHover, true);
+	currentDisabledHoverElement = null;
+
+	document.querySelectorAll("[data-edit-disabled]").forEach((el) => {
+		el.removeEventListener("mouseenter", handleDisabledElementHover);
+		el.removeEventListener("mouseleave", handleDisabledElementLeave);
+	});
+}
+
+window.addEventListener("message", function (event) {
+	if (event.data?.type === "edit-save") {
+		handleEditSave(event.data?.payload?.newText);
+	}
+	if (event.data?.type === "enable-edit-mode") {
+		if (event.data?.translations) {
+			translations = { ...translations, ...event.data.translations };
+		}
+
+		enableEditMode();
+	}
+	if (event.data?.type === "disable-edit-mode") {
+		disableEditMode();
+	}
+});
+</script>
+		<script type="module">const ALLOWED_PARENT_ORIGINS = [
+	'https://horizons.hostinger.com',
+	'https://horizons.hostinger.dev',
+	'https://horizons-frontend-local.hostinger.dev',
+	'http://localhost:4000',
+];
+
+const IMPORTANT_STYLES = [
+	'display',
+	'position',
+	'flex-direction',
+	'justify-content',
+	'align-items',
+	'width',
+	'height',
+	'padding',
+	'margin',
+	'border',
+	'background-color',
+	'color',
+	'font-size',
+	'font-weight',
+	'font-family',
+	'border-radius',
+	'box-shadow',
+	'gap',
+	'grid-template-columns',
+];
+
+const PRIMARY_400_COLOR = '#7B68EE';
+const TEXT_CONTEXT_MAX_LENGTH = 500;
+const DATA_SELECTION_MODE_ENABLED_ATTRIBUTE = 'data-selection-mode-enabled';
+const MESSAGE_TYPE_ENABLE_SELECTION_MODE = 'enableSelectionMode';
+const MESSAGE_TYPE_DISABLE_SELECTION_MODE = 'disableSelectionMode';
+
+let selectionModeEnabled = false;
+let currentHoverElement = null;
+let overlayDiv = null;
+let selectedOverlayDiv = null;
+let selectedElement = null;
+
+
+function injectStyles() {
+	if (document.getElementById('selection-mode-styles')) {
+		return;
+	}
+
+	const style = document.createElement('style');
+	style.id = 'selection-mode-styles';
+	style.textContent = `
+		#selection-mode-overlay {
+			position: absolute;
+			border: 2px dashed ${PRIMARY_400_COLOR};
+			pointer-events: none;
+			z-index: 999999;
+		}
+		#selection-mode-selected-overlay {
+			position: absolute;
+			border: 3px solid ${PRIMARY_400_COLOR};
+			pointer-events: none;
+			z-index: 999998;
+		}
+	`;
+	document.head.appendChild(style);
+}
+
+function getParentOrigin() {
+	if (
+		window.location.ancestorOrigins
+		&& window.location.ancestorOrigins.length > 0
+	) {
+		return window.location.ancestorOrigins[0];
+	}
+
+	if (document.referrer) {
+		try {
+			return new URL(document.referrer).origin;
+		} catch {
+			console.warn('[SELECTION MODE] Invalid referrer URL:', document.referrer);
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Extract file path from React Fiber metadata (simplified - only for filePath)
+ * @param {*} node - DOM node
+ * @returns {string|null} - File path if found, null otherwise
+ */
+function getFilePathFromNode(node) {
+	const fiberKey = Object.keys(node).find(k => k.startsWith('__reactFiber'));
+	if (!fiberKey) {
+		return null;
+	}
+
+	const fiber = node[fiberKey];
+	if (!fiber) {
+		return null;
+	}
+
+	// Traverse up the fiber tree to find source metadata
+	let currentFiber = fiber;
+	while (currentFiber) {
+		const source = currentFiber._debugSource
+			|| currentFiber.memoizedProps?.__source
+			|| currentFiber.pendingProps?.__source;
+
+		if (source?.fileName) {
+			return source.fileName;
+		}
+
+		currentFiber = currentFiber.return;
+	}
+
+	return null;
+}
+
+/**
+ * Generate a CSS selector path to uniquely identify the element
+ * @param {*} element
+ * @returns {string} CSS selector path
+ */
+function getPathToElement(element) {
+	const path = [];
+	let current = element;
+	let depth = 0;
+	const maxDepth = 20; // Prevent infinite loops
+
+	while (current && current.nodeType === Node.ELEMENT_NODE && depth < maxDepth) {
+		let selector = current.nodeName.toLowerCase();
+
+		if (current.id) {
+			selector += `#${current.id}`;
+			path.unshift(selector);
+			break; // ID is unique, stop here
+		}
+
+		if (current.className && typeof current.className === 'string') {
+			const classes = current.className.trim().split(/\s+/).filter(c => c.length > 0);
+			if (classes.length > 0) {
+				selector += `.${classes.join('.')}`;
+			}
+		}
+
+		if (current.parentElement) {
+			const siblings = Array.from(current.parentElement.children);
+			const sameTypeSiblings = siblings.filter(s => s.nodeName === current.nodeName);
+			if (sameTypeSiblings.length > 1) {
+				const index = sameTypeSiblings.indexOf(current) + 1;
+				selector += `:nth-of-type(${index})`;
+			}
+		}
+
+		path.unshift(selector);
+		current = current.parentElement;
+		depth++;
+	}
+
+	return path.join(' > ');
+}
+
+function getComputedStyles(element) {
+	const computedStyles = window.getComputedStyle(element);
+	
+	return Object.fromEntries(IMPORTANT_STYLES.map((style) => {
+		const styleValue = computedStyles.getPropertyValue(style)?.trim();
+
+		return styleValue && styleValue !== 'none' && styleValue !== 'normal'
+			? [style, styleValue]
+			: null;
+	})
+	.filter(Boolean));
+}
+
+function extractDOMContext(element) {
+	if (!element) {
+		return null;
+	}
+
+	const textContent = element.textContent?.trim();
+
+	return {
+		outerHTML: element.outerHTML,
+		selector: getPathToElement(element),
+		attributes: (element.attributes && element.attributes.length > 0) 
+		? Object.fromEntries(Array.from(element.attributes).map((attr) => [attr.name, attr.value]))
+			: {},
+		computedStyles: getComputedStyles(element),
+		textContent: (textContent && textContent.length > 0 && textContent.length < TEXT_CONTEXT_MAX_LENGTH)
+			? element.textContent?.trim()
+			: null
+	};
+}
+
+function createOverlay() {
+	if (overlayDiv) {
+		return;
+	}
+
+	injectStyles();
+
+	overlayDiv = document.createElement('div');
+	overlayDiv.id = 'selection-mode-overlay';
+	document.body.appendChild(overlayDiv);
+}
+
+function createSelectedOverlay() {
+	if (selectedOverlayDiv) {
+		return;
+	}
+
+	injectStyles();
+
+	selectedOverlayDiv = document.createElement('div');
+	selectedOverlayDiv.id = 'selection-mode-selected-overlay';
+	document.body.appendChild(selectedOverlayDiv);
+}
+
+function removeOverlay() {
+	if (overlayDiv && overlayDiv.parentNode) {
+		overlayDiv.parentNode.removeChild(overlayDiv);
+		overlayDiv = null;
+	}
+	if (selectedOverlayDiv && selectedOverlayDiv.parentNode) {
+		selectedOverlayDiv.parentNode.removeChild(selectedOverlayDiv);
+		selectedOverlayDiv = null;
+	}
+}
+
+function showOverlay(element) {
+	if (!overlayDiv) {
+		createOverlay();
+	}
+
+	const rect = element.getBoundingClientRect();
+	overlayDiv.style.left = `${rect.left + window.scrollX}px`;
+	overlayDiv.style.top = `${rect.top + window.scrollY}px`;
+	overlayDiv.style.width = `${rect.width}px`;
+	overlayDiv.style.height = `${rect.height}px`;
+	overlayDiv.style.display = 'block';
+}
+
+function showSelectedOverlay(element) {
+	if (!selectedOverlayDiv) {
+		createSelectedOverlay();
+	}
+
+	const rect = element.getBoundingClientRect();
+	selectedOverlayDiv.style.left = `${rect.left + window.scrollX}px`;
+	selectedOverlayDiv.style.top = `${rect.top + window.scrollY}px`;
+	selectedOverlayDiv.style.width = `${rect.width}px`;
+	selectedOverlayDiv.style.height = `${rect.height}px`;
+	selectedOverlayDiv.style.display = 'block';
+}
+
+function hideOverlay() {
+	if (overlayDiv) {
+		overlayDiv.style.display = 'none';
+	}
+}
+
+function handleMouseMove(event) {
+	if (!selectionModeEnabled) {
+		return;
+	}
+
+	const element = document.elementFromPoint(event.clientX, event.clientY);
+	if (!element) {
+		hideOverlay();
+		currentHoverElement = null;
+		return;
+	}
+
+	if (element === overlayDiv || element === selectedOverlayDiv) {
+		return;
+	}
+
+	// Only update if we're hovering a different element
+	if (currentHoverElement !== element) {
+		currentHoverElement = element;
+
+		// Show outline on the element
+		showOverlay(element);
+	}
+}
+
+function handleTouchStart(event) {
+	if (!selectionModeEnabled) {
+		return;
+	}
+
+	const touch = event.touches[0];
+	if (!touch) {
+		return;
+	}
+
+	const element = document.elementFromPoint(touch.clientX, touch.clientY);
+	if (!element) {
+		currentHoverElement = null;
+		return;
+	}
+
+	if (element === overlayDiv || element === selectedOverlayDiv) {
+		return;
+	}
+
+	currentHoverElement = element;
+
+	showOverlay(element);
+}
+
+function stripFilePath(filePath) {
+	if (!filePath) {
+		return filePath;
+	}
+
+	const publicHtmlIndex = filePath.indexOf('public_html/');
+	if (publicHtmlIndex !== -1) {
+		return filePath.substring(publicHtmlIndex + 'public_html/'.length);
+	}
+
+	return filePath;
+}
+
+function handleClick(event) {
+	if (!selectionModeEnabled) {
+		return;
+	}
+
+	if (!currentHoverElement) {
+		const element = document.elementFromPoint(event.clientX, event.clientY);
+
+		if (!element || element === overlayDiv || element === selectedOverlayDiv) {
+			return;
+		}
+
+		currentHoverElement = element;
+	}
+
+	event.preventDefault();
+	event.stopPropagation();
+	event.stopImmediatePropagation();
+
+	const domContext = extractDOMContext(currentHoverElement);
+
+	if (!domContext) {
+		return;
+	}
+
+	selectedElement = currentHoverElement;
+	if (selectedElement) {
+		showSelectedOverlay(selectedElement);
+	}
+
+	// Extract file path from React Fiber (if available)
+	const filePath = getFilePathFromNode(currentHoverElement);
+	const strippedFilePath = filePath ? stripFilePath(filePath) : undefined;
+
+	// Send domContext and filePath to parent window
+	const parentOrigin = getParentOrigin();
+	if (parentOrigin && ALLOWED_PARENT_ORIGINS.includes(parentOrigin)) {
+		window.parent.postMessage(
+			{
+				type: 'elementSelected',
+				payload: {
+					filePath: strippedFilePath,
+					domContext,
+				},
+			},
+			parentOrigin,
+		);
+	}
+}
+
+function handleMouseLeave() {
+	if (!selectionModeEnabled) {
+		return;
+	}
+
+	hideOverlay();
+	currentHoverElement = null;
+}
+
+function enableSelectionMode() {
+	if (selectionModeEnabled) {
+		return;
+	}
+
+	selectionModeEnabled = true;
+	document.getElementById('root')?.setAttribute(DATA_SELECTION_MODE_ENABLED_ATTRIBUTE, 'true');
+
+	document.body.style.userSelect = 'none';
+
+	createOverlay();
+	document.addEventListener('mousemove', handleMouseMove, true);
+	document.addEventListener('touchstart', handleTouchStart, true);
+	document.addEventListener('click', handleClick, true);
+	document.addEventListener('mouseleave', handleMouseLeave, true);
+}
+
+function disableSelectionMode() {
+	if (!selectionModeEnabled) {
+		return;
+	}
+
+	selectionModeEnabled = false;
+	document.getElementById('root')?.removeAttribute(DATA_SELECTION_MODE_ENABLED_ATTRIBUTE);
+
+	document.body.style.userSelect = '';
+
+	hideOverlay();
+	removeOverlay();
+	currentHoverElement = null;
+	selectedElement = null;
+
+	document.removeEventListener('mousemove', handleMouseMove, true);
+	document.removeEventListener('touchstart', handleTouchStart, true);
+	document.removeEventListener('click', handleClick, true);
+	document.removeEventListener('mouseleave', handleMouseLeave, true);
+}
+
+window.addEventListener('message', (event) => {
+	if (event.data?.type === MESSAGE_TYPE_ENABLE_SELECTION_MODE) {
+		enableSelectionMode();
+	}
+	if (event.data?.type === MESSAGE_TYPE_DISABLE_SELECTION_MODE) {
+		disableSelectionMode();
+	}
+});
+</script>
+	
+
+<span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span></body></html>
